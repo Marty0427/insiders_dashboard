@@ -4,6 +4,7 @@ from dash.dependencies import Input, Output, State
 import pandas as pd
 from base import insiders
 import datetime as dt
+import flask
 
 
 def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_csv('data/summary_R3000.csv').round(3), offset = 100):
@@ -33,8 +34,11 @@ def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_csv(
 
 
 def make_app():
-    app = dash.Dash(__name__)
-    server = app.server
+
+
+    server = flask.Flask(__name__) # define flask app.server
+
+    app = dash.Dash(__name__, server=server) # call flask server
 
     df = get_data()
 
