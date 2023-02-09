@@ -6,7 +6,7 @@ from base import insiders
 import datetime as dt
 
 
-def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_pickle('summary_R3000.pkl').round(3), offset = 100):
+def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_pickle('data/summary_R3000.pkl').round(3), offset = 100):
     
     today = dt.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
     if today.weekday() == 6:
@@ -34,6 +34,8 @@ def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_pick
 
 def make_app():
     app = dash.Dash(__name__)
+    server = app.server
+
     df = get_data()
 
     table = dash_table.DataTable(
@@ -70,15 +72,14 @@ def make_app():
             df = get_data(trades_len = 10, period = 'mo2', ratio = 80)
             return df.to_dict('records')
         
+
     @app.callback(
     Output(component_id='not', component_property='children'),
     [Input(component_id='export-table-button', component_property='n_clicks'),
      State(component_id='table', component_property='selected_rows')])
     def export_table(n_clicks, rows):
         if n_clicks > 0:
-            #df = get_data(trades_len = 10, period = 'mo2', ratio = 80)
             df.iloc[rows].to_csv(f'daily/df_selected_{dt.date.today()}.csv')
-            #return df.to_dict('records')
         
     return app
 
