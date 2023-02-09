@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, Input, Outpu
+from dash import Dash, html, dcc, Input, Output
 import pandas as pd
 import plotly.graph_objs as go
 import flask
@@ -7,7 +7,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 server = flask.Flask(__name__) # define flask app.server
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets, server=server) # call flask server
+app = Dash(__name__, external_stylesheets=external_stylesheets, server=server) # call flask server
 
 # run following in command
 # gunicorn graph:app.server -b :8000
