@@ -35,6 +35,7 @@ def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_csv(
 
 def make_app():
     app = dash.Dash(__name__) # call flask server
+    server = flask.Flask(__name__)
     df = get_data()
 
     table = dash_table.DataTable(
