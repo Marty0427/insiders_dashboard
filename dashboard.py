@@ -6,7 +6,7 @@ from base import insiders
 import datetime as dt
 
 
-def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_pickle('data/summary_R3000.pkl').round(3), offset = 100):
+def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_csv('data/summary_R3000.csv').round(3), offset = 100):
     
     today = dt.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
     if today.weekday() == 6:
