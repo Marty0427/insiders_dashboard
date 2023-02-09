@@ -84,4 +84,4 @@ def make_app():
 
 if __name__ == '__main__':
     app = make_app()
-    app.run_server(debug=True)
+    app.run_server(debug=False)
