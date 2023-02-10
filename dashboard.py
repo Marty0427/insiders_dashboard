@@ -32,8 +32,7 @@ def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_csv(
 
 
 
-def make_app():
-    server = flask.Flask(__name__) # define flask app.server
+def make_app(server):
 
     app = Dash(__name__,server=server) # call flask server
     df = get_data()
@@ -84,6 +83,7 @@ def make_app():
     return app
 
 if __name__ == '__main__':
-    app = make_app()
+    server = flask.Flask(__name__) # define flask app.server
+    app = make_app(server)
     app.run_server(debug=False)
 
