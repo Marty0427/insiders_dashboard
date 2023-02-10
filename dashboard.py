@@ -1,5 +1,4 @@
-import dash
-from dash import html, dash_table
+from dash import Dash, html, dash_table
 from dash.dependencies import Input, Output, State
 import pandas as pd
 from base import insiders
@@ -34,8 +33,9 @@ def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_csv(
 
 
 def make_app():
-    app = dash.Dash(__name__) # call flask server
-    server = flask.Flask(__name__)
+    server = flask.Flask(__name__) # define flask app.server
+
+    app = Dash(__name__,server=server) # call flask server
     df = get_data()
 
     table = dash_table.DataTable(
