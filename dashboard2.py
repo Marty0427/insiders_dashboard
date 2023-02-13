@@ -1,4 +1,4 @@
-from dash import Dash, html, dash_table
+from dash import Dash, html, dcc, dash_table
 from dash.dependencies import Input, Output, State
 import pandas as pd
 from base import insiders
@@ -59,16 +59,26 @@ table = dash_table.DataTable(
 app.layout = html.Div([
     html.Button(id='upgrade-table-button', children='Upgrade Table', n_clicks=0),
     html.Button(id='export-table-button', children='Export Table', n_clicks=0),
+    html.Div([dcc.Slider(
+        min=0,
+        max=10,
+        step=1,
+        #marks={i: i for i in range(-5,11)},
+        value=1,
+        id = 'offset-slider'
+    )]),
+
     html.Div(id='not', style = {'display': 'none'}),
     table
 ])
 
 @app.callback(
 Output(component_id='table', component_property='data'),
-[Input(component_id='upgrade-table-button', component_property='n_clicks')])
-def upgrade_table(n_clicks):
+[Input(component_id='upgrade-table-button', component_property='n_clicks'),
+ State(component_id='offset-slider', component_property='value')])
+def upgrade_table(n_clicks, offset):
     if n_clicks > 0:
-        df = get_data(trades_len = 10, period = 'mo2', ratio = 80)
+        df = get_data(trades_len = 10, period = 'mo2', ratio = 80, offset = offset)
         return df.to_dict('records')
     
 
