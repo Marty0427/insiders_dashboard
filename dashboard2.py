@@ -1,6 +1,7 @@
 from dash import Dash, html, dcc, dash_table
 from dash.dependencies import Input, Output, State
 import pandas as pd
+from pandas.tseries.offsets import BDay
 from base import insiders
 import datetime as dt
 import flask
@@ -14,12 +15,8 @@ app = Dash(__name__,server=server) # call flask server
 def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_csv('data/summary_R3000.csv').round(3), offset = 100):
     
     today = dt.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
-    if today.weekday() == 6:
-        date = today - dt.timedelta(days = 2 + offset)
-    elif today.weekday() == 5:
-        date = today - dt.timedelta(days = 1 + offset)
-    else:
-        date = today - dt.timedelta(days = offset)
+
+    date = today - BDay(offset)
 
     df = insiders.fv_last_insiders(side = 'buy')
     df_last = df[df.SEC >= date]
