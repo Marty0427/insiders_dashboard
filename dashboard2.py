@@ -42,7 +42,7 @@ table = dash_table.DataTable(
     columns=[{"name": i, "id": i} for i in df.columns],
     data=df.to_dict('records'),
     editable=True,
-    filter_action="native",
+    #filter_action="native",
     sort_action="native",
     sort_mode="multi",
     column_selectable="single",
@@ -63,7 +63,6 @@ app.layout = html.Div([
         min=0,
         max=10,
         step=1,
-        #marks={i: i for i in range(-5,11)},
         value=1,
         id = 'offset-slider'
     )]),
