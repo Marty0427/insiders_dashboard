@@ -50,7 +50,7 @@ def fv_last_insiders(side = None):
 
     page = http_request_get(url, parse=False)
     
-    start = '<table class="body-table w-full bg-[#d3d3d3]">'
+    start = '<table class="table-insider body-table w-full bg-[#d3d3d3]">'
     end = '<span class="body-table">'
 
     data = start + page[0].split(end)[0].split(start)[1]

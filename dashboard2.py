@@ -34,8 +34,27 @@ def get_data(trades_len = 10, period = 'mo2', ratio = 80, summary = pd.read_csv(
 
 df = get_data()
 
-table = dash_table.DataTable(
-    id='table',
+table_entry = dash_table.DataTable(
+    id='table_entry',
+    columns=[{"name": i, "id": i} for i in df.columns],
+    data=df.to_dict('records'),
+    editable=True,
+    #filter_action="native",
+    sort_action="native",
+    sort_mode="multi",
+    column_selectable="single",
+    row_selectable="multi",
+    row_deletable=False,
+    selected_columns=[],
+    selected_rows=[],
+    page_action="native",
+    page_current= 0,
+    page_size= 200,
+    style_header={'fontWeight': 'bold'}
+)
+
+table_exit = dash_table.DataTable(
+    id='table_exit',
     columns=[{"name": i, "id": i} for i in df.columns],
     data=df.to_dict('records'),
     editable=True,
@@ -65,11 +84,14 @@ app.layout = html.Div([
     )]),
 
     html.Div(id='not', style = {'display': 'none'}),
-    table
+    html.H4('Entry'),
+    table_entry,
+    html.H4('Exit'),
+    table_exit
 ])
 
 @app.callback(
-Output(component_id='table', component_property='data'),
+Output(component_id='table_entry', component_property='data'),
 [Input(component_id='upgrade-table-button', component_property='n_clicks'),
  State(component_id='offset-slider', component_property='value')])
 def upgrade_table(n_clicks, offset):
@@ -81,7 +103,7 @@ def upgrade_table(n_clicks, offset):
 @app.callback(
 Output(component_id='not', component_property='children'),
 [Input(component_id='export-table-button', component_property='n_clicks'),
-    State(component_id='table', component_property='selected_rows')])
+    State(component_id='table_entry', component_property='selected_rows')])
 def export_table(n_clicks, rows):
     if n_clicks > 0:
         df.iloc[rows].to_csv(f'daily/df_selected_{dt.date.today()}.csv')
